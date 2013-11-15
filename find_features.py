@@ -44,4 +44,12 @@ for x in range(0,20):
 	feature_list.append(feature_list[20+x] - feature_list[40+x])
 
 # find the standard deviation
-
+print "Find the standard deviation"
+for x in range(0,20):
+	sumsquares = 0
+	for y in range(0,len(hdulist[1].data)):
+		if not math.isnan(hdulist[1].data[y][x]):
+			sumsquare += (hdulist[1].data[y][x]-feature_list[x])**2
+	variance = sumsquares/len(hdulist[1].data)
+	stdev = variance**0.5
+	feature_list.append(stdev)
