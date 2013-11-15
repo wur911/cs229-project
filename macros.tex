@@ -1,0 +1,58 @@
+% At this point, my macros file is a bit disorganized. But it ought to be
+% usable.
+
+% For page margins
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{enumerate}
+% Sets font to Garamond. Feel free to change this or remove it.
+\usepackage[garamond]{mathdesign}
+\usepackage{hyperref}
+% Makes figure labels work better
+\usepackage[all]{hypcap}
+
+% Note: we might want to use fancyhdr. We can worry about that later.
+\pagestyle{plain}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{^{\mathrm T}\!}
+\newcommand{\ud}{\,\mathrm d}
+\newcommand{\dfr}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
+\newcommand{\pfr}[2]{\frac{\partial #1}{\partial #2}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% I like bold vectors, and this allows bold Greek letters too.
+% Feel free to change or remove this.
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+
+% So that we have \paren{...} instead of \left( and \right)
+\DeclarePairedDelimiter\paren{(}{)}
+\DeclarePairedDelimiter\ang{\langle}{\rangle}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+% Swap paren* and paren, etc., so that the normal version resizes by default.
+% Meanwhile, one can use \paren*[\Big]{...} to customize the size easily.
+% It would be interesting to wrap this up into a custom \definedelimiter command...
+\makeatletter
+    \let\oldparen\paren
+    \def\paren{\@ifstar{\oldparen}{\oldparen*}}
+    \let\oldang\ang
+    \def\ang{\@ifstar{\oldang}{\oldang*}}
+    \let\oldabs\abs
+    \def\abs{\@ifstar{\oldabs}{\oldabs*}}
+    \let\oldnorm\norm
+    \def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+% This allows x"i -> x^{(i)} and x"{i+1} -> x^{(i+1)}
+\catcode`\"=13
+\newcommand{"}[1]{^{(#1)}}
+
+\newcommand{\e}{\varepsilon}
+\newcommand{\E}[1]{\cdot 10^{#1}}
