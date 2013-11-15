@@ -1,0 +1,64 @@
+Stuff that looks useful.
+
+The website for crowdsourced classification projects. They claim that lots of trained users are better than
+"even the smartest computers" -- can we put that statement to the test?
+http://www.galaxyzoo.org/
+
+Their data page:
+http://data.galaxyzoo.org/
+
+Hubble Data Archive -- might be useful for obtaining training data.
+We could try to use the NGC or IC objects photographed by Hubble to train a galaxy classifier.
+http://hla.stsci.edu/hlaview.html
+
+Planet Hunters uses Kepler lightcurve data to find exoplanets! This is pretty cool.
+It's crowdsourced in the same spirit as Galaxy Zoo.
+http://www.planethunters.org/classify
+
+Data seems to be stored in FITS files. In order to handle these, here are some options:
+	PyFITS, for Python, by STSci (being phased out)
+	http://www.stsci.edu/institute/software_hardware/pyfits
+	http://www.astropython.org/tutorial/2010/10/PyFITS-FITS-files-in-Python
+
+	AstroPy, for Python
+	http://www.astropy.org/
+	http://docs.astropy.org/en/stable/io/fits/index.html
+
+	PFITS, for Python (calls FITSIO, below)
+	https://pypi.python.org/pypi/pfits
+
+	FITSIO, for C and Fortran (!)
+	http://heasarc.gsfc.nasa.gov/fitsio/
+
+	CCFits, for C++ (calls FITSIO)
+	http://heasarc.gsfc.nasa.gov/docs/software/fitsio/ccfits/
+
+	JFits, for Java
+	http://www.eso.org/~pgrosbol/fits_java/jfits.html
+
+	Many, many more:
+	http://fits.gsfc.nasa.gov/fits_libraries.html
+
+SDSS Data Page (source of Galazy Zoo data)
+http://www.sdss.org/dr7/products/index.html
+
+Kepler data:
+http://archive.stsci.edu/kepler/publiclightcurves.html
+http://archive.stsci.edu/kepler/data_search/search.php
+http://exoplanetarchive.ipac.caltech.edu/applications/ETSS/Kepler_index.html
+
+KOI (objects of interest)
+http://archive.stsci.edu/kepler/koi/search.php
+
+List of confirmed transiting expolanets:
+http://exoplanet.eu/catalog/?f=%22transit%22+IN+detection
+
+Helpful Guide for Detecting Transits (for humans)
+http://talk.planethunters.org/discussions/DPH100ia30
+
+Things I haven't found yet, though they're probably not too hard to find:
+ - Lightcurves of negative examples, such as ordinary stars.
+ - Lightcurves of variable stars without exoplanets (which will probably be among the greatest sources of error)
+ - Lightcurves of eclipsing binaries (which produce very similar-looking curves, and should be trained against)
+ - For the galaxy project, I'm not sure how exactly we would put together the training data. To wit, I don't know
+   where to find a big list of the form "SDSS 200301 is Elliptical, 200302 is Barred Spiral, ..."
