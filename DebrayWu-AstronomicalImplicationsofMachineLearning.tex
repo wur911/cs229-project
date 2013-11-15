@@ -43,25 +43,28 @@ In this paper, we will use the following standard terminology.
 \section{Methodology}
 We obtained Kepler light curves from the Mikulski Archive for Space Telescopes. We first divided light curves into those corresponding to exoplanets and those corresponding to non-exoplanets. The light curves are represented as time series data, which means that each light curve is represented by a series of attributes at each time point within some range. The attributes of the light curve stored in the binary table and are data attributes that we are going to be looking at include:
 \begin{itemize}
-	\item TIME
-	\item SAP\_Flux 
-	\item SAP\_Flux\_Err
-	\item SAP\_BKG
-	\item SAP\_BKG\_Err
-	\item PDCSAP\_Flux
-	\item PDCSAP\_Flux\_Err
-	\item PSF\_Centr1
-	\item PSF\_Centr1\_Err
-	\item PSF\_Centr2
-	\item PSF\_Centr2\_Err
-	\item MOM\_Centr1
-	\item MOM\_Centr1\_Err
-	\item MOM\_Centr2
-	\item MOM\_Centr2\_Err
+	\item TIME: The time at the midpoint of the light curve
+	\item SAP\_FLUX: Simple aperture photometry flux in units of electrons per second contained in the optimal aperture pixels
+	\item SAP\_FLUX\_ERR: The error in SAP flux in electrons per second
+	\item SAP\_BKG: The total background flux summed over the optimal aperture
+	\item SAP\_BKG\_ERR: The error in the background flux
+	\item PDCSAP\_FLUX: Flux after Presearch Data Conditioning (PDC) has accounted for systematic error sources such as drift or focus change
+	\item PDCSAP\_FLUX\_ERR: The error in PDCSAP flux
+	\item PSF\_CENTR1: The column centroid obtained by fitting the point spread function
+	\item PSF\_CENTR1\_ERR: The error in PSF centroid 1
+	\item PSF\_CENTR2: The row centroid obtained by fitting the point spread function
+	\item PSF\_CENTR2\_ERR: The error in PSF centroid 2
+	\item MOM\_CENTR1: The column value for the flux weighted centroid (first moment)
+	\item MOM\_CENTR1\_ERR: The error in MOM centroid 1
+	\item MOM\_CENTR2: The row value for the flux weighted centroid (first moment)
+	\item MOM\_CENTR2\_ERR: The error in MOM centroid 2
 	\item POS\_CORR1
 	\item POS\_CORR2
 \end{itemize}
 
+From here we can attempt to do several things. We can try to run some supervised learning classifiers using the arithmetic mean, maximum value, minimum value, range, and standard deviation of each data attribute as opposed to treating it as a time series. This primitive form of filtering is a crude way of representing the time series data, but for now it should gives us a rough idea of how our data can be used for classification.
+
+Given that our data is in the form of time series, we will want to look at different forms of time series analysis, such as dynamic time warping or Hidden Markov Models. 
 
 % and so on.
 \section{Results}
