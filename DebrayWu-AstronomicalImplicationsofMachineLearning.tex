@@ -33,8 +33,14 @@ In this paper, we will use the following standard terminology.
 \begin{itemize}
 	\item An \emph{exosolar planet} is defined to be a planet that orbits a star other than the Sun.\footnote{The words \emph{exoplanet}, \emph{exosolar planet}, and \emph{extrasolar planet} all mean the same thing, and are used interchangeably.} The standard definition of a planet has two kinds of ambiguity: very low-mass objects in our solar system, such as Pluto, were defined to be ``dwarf planets,'' and the boundaries of this definition aren't entirely clear. Very high-mass planets, however, resemble very small stars; though they don't undergo hydrogen fusion, they look very much like a dim type of star called a brown dwarf. The boundary is somewhat arbitrarily delineated at 14 Jupiter masses. However, neither of these is a great concern in this paper: science is yet unable to detect Pluto-sized worlds around another star, so the low-mass ambiguity does not arise in this data, and the high-mass boundary is not as important: a classifier that discovers planets and small brown dwarfs is still useful. However, it will be helpful to distinguish these systems from eclipsing binaries (see below).
 	\item \emph{Planetary transit} is a method of exoplanet detection, In general, because planets are very dim relative to their bright host stars, they cannot be directly imaged, in the same way that it is difficult to detect a firefly near a searchlight from afar. Thus, several indirect methods exist. Planetary transit repeatedly checks the brightness of a star over time; periodic, regular dips in this output sometimes happen because an exoplanet crosses between its sun and the observer. Thus, a planet may be detected without direct observation.
-	\item A \emph{lightcurve} is a graph of a star's brightness over time. A transiting exoplanet will thus manifest itself as a lightcurve that is relatively constant, but with regular, small dips corresponding to the transits.%TODO add graph
+	\item A \emph{lightcurve} is a graph of a star's brightness over time. A transiting exoplanet will thus manifest itself as a lightcurve that is relatively constant, but with regular, small dips corresponding to the transits. See Figure~\ref{curves} for two examples.
 	 The brightness is often given in units of magnitude rather than strict luminosity, because this runs over a relatively nicer range of values.
+	\begin{figure}
+	\centering
+	\label{curves}
+	\includegraphics[width=6in]{transit_lightcurve}
+	\caption{Lightcurves (graphs of stellar brightness versus time) of two planetary transit systems discovered by Kepler. The regular small dips correspond to the planet passing in front of its sun and slightly diminishing the observed magnitude. Source: NASA}%http://kepler.nasa.gov/education/activities/transitTracks/ if we make a real bibliography
+	\end{figure}
 	\item An \emph{eclipsing binary} is a pair of stars that orbit each other, but such that each eclipses the other from the Earth's point of view during the orbit. These generally don't contain transiting exoplanets, but instead form an important negative example. Their lightcurves look like those of exoplanets, but they aren't exoplanets.
 \end{itemize}
 % Why Kepler?
@@ -64,7 +70,10 @@ We obtained Kepler light curves from the Mikulski Archive for Space Telescopes. 
 	\item POS\_CORR2
 \end{itemize}
 
-From here we can attempt to do several things. We can try to run some supervised learning classifiers using the arithmetic mean, maximum value, minimum value, range, and standard deviation of each data attribute as opposed to treating it as a time series. 
+These lightcurves can be thought of as feature vectors in an enormously large-dimensional space, since they correspond to several data points over a large number of distinct observations. Thus, it will be necessary to do some feature selection.
+
+For this milestone, we chose to explicitly work with a few simple features rather than running a larger feature-selection algorithm. Specifically, for each data point above, we calculated the mean and standard deviation of the element over the entire time series. 
+%From here we can attempt to do several things. We can try to run some supervised learning classifiers using the arithmetic mean, maximum value, minimum value, range, and standard deviation of each data attribute as opposed to treating it as a time series. 
 This primitive form of filtering a time series into its global features is a crude way of using the time series data, but for now it should gives us a rough idea of how our data can be used for classification.
 
 We can then use some of the classifiers we learned, such as logistic regression, Naive Bayes classifiers, or support vector machines to train a classifier on these new features. 
