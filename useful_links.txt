@@ -47,6 +47,17 @@ http://archive.stsci.edu/kepler/publiclightcurves.html
 http://archive.stsci.edu/kepler/data_search/search.php
 http://exoplanetarchive.ipac.caltech.edu/applications/ETSS/Kepler_index.html
 
+The Kepler light curves contain time series data.
+http://archive.stsci.edu/kepler/manuals/archive_manual.pdf
+The data attributes include:
+	-TIME - Time
+	-TIMECORR - Time correction
+	-SAP_FLUX - Flux in electrons/second
+	-SAP_FLUX_ERR - error in flux
+	-SAP_BKG - background 
+	-SAP_BKG_ERR - error in background
+	etc....
+
 KOI (objects of interest)
 http://archive.stsci.edu/kepler/koi/search.php
 
