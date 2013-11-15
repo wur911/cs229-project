@@ -1,0 +1,5 @@
+echo "Hi! Enter an index number of the form XXXX:"
+read user_input
+wget -q -nH --cut-dirs=6 -r -l0 -c -N -np -R 'index*' -erobots=off http://archive.stsci.edu/pub/kepler/lightcurves/0014/001429092
+mkdir kplr_data_0014
+mv kplr0014* kplr_data_0014
