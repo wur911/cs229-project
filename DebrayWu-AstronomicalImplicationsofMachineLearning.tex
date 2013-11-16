@@ -49,7 +49,7 @@ Until recently, most exoplanets weren't detected by transit; astronomers used an
 % Planet Hunters, maybe
 
 \section{Methodology}
-We obtained Kepler light curves from the Mikulski Archive for Space Telescopes (see \cite{mast}). Lightcurves are stored in the \texttt{.,fits} file format, so we used the AstroPy Python library, found at \cite{AstroPy}, to process these files. We first divided light curves into those corresponding to exoplanets and those corresponding to non-exoplanets. The light curves are represented as time series data, which means that each light curve is represented by a series of attributes at each time point within some range. The attributes of the light curve stored in the binary table and are data attributes that we are going to be looking at include:
+We obtained Kepler light curves from the Mikulski Archive for Space Telescopes (see \cite{mast}). Lightcurves are stored in the \texttt{.fits} file format, so we used the AstroPy Python library, found at \cite{AstroPy}, to parse them. We first divided light curves into those corresponding to exoplanets and those corresponding to non-exoplanets. The light curves are represented as time series data, which means that each light curve is represented by a series of attributes at each time point within some range. The attributes of the light curve stored in the binary table and are data attributes that we are going to be looking at include:
 \begin{itemize}
 	\item TIME: The time at the midpoint of the light curve
 	\item SAP\_FLUX: Simple aperture photometry flux in units of electrons per second contained in the optimal aperture pixels
@@ -76,9 +76,9 @@ For this milestone, we chose to explicitly work with a few simple features rathe
 %From here we can attempt to do several things. We can try to run some supervised learning classifiers using the arithmetic mean, maximum value, minimum value, range, and standard deviation of each data attribute as opposed to treating it as a time series. 
 This primitive form of filtering a time series into its global features is a crude way of using the time series data, but for now it should gives us a rough idea of how our data can be used for classification. We can then use some of the classifiers we learned, such as logistic regression, Na\"ive Bayes classifiers, or support vector machines to train a classifier on these new features. 
 
-We are currently using an optimal margin classifier with the uninteresting
+We are currently using an optimal margin classifier with the linear kernel induced by $\phi(\vec x) = \vec x$. We specifically use the \textsc{Liblinear} classifier \cite{LibLinear} to accomplish this. However, given the relative complexity of the problem, we do not expect this to ultimately be the best approach. We chose it in order to begin classifying data, so that we have actual numbers to work with, rather than just ideas. In particular, there are good reasons to assume that the problem is not necessarily linearly separable: intuitively, there are two major astronomical constraints on a lightcurve. If there are no dips in the lightcurve, then there is probably no transiting or eclipsing body around the parent star (or it is too small to be detected with current technology); yet if the changes in the magnitude are too large, then the transiting object is unlikely to be a planet; instead, it could be a brown dwarf or even a stellar companion (in which case the system is an eclipsing binary). Thus, the exoplanets lie in between these two constraints in the ``direction'' of the depth of the magnitude loss (i.e. some line in the feature space that accounts for these particular differences in the lightcurves), so a linear classifier that doesn't use a higher-dimensional kernel will be inaccurate.
 
-Given that our data is in the form of time series, we will want to look at different forms of time series analysis, such as dynamic time warping or Hidden Markov Models. 
+Given that our data is in the form of time series, we will want to look at different forms of time series analysis, such as dynamic time warping or Hidden Markov Models. The Weka library, found at \cite{Weka}, provides implementations of such algorithms.
 
 % and so on.
 \section{Results}
@@ -86,7 +86,6 @@ Given that our data is in the form of time series, we will want to look at diffe
 \section{Analysis}
 
 \section{Future Work}
-Since we are dealing with time series data, we want to be able to more powerful tools to see what we can learn more from the data. One possibility is to look at dynamic time warping. Dynamic time warping (DTW), which is an algorithm to measure the similarity between two time sequences that may vary in time or speed. Given that our exoplanets may have varying orbital periods and sizes, DTW may help in detecting more subtle patterns that may be used to distinguish exoplanets or eclipsing binaries. While DTW is a exceptional algorithm, it has one major flaw - it is computionally demanding. Nonetheless, using DTW si definitely another area of improvement we can explore.
 
 % bibliography of some sort
 \begin{thebibliography}{9}
