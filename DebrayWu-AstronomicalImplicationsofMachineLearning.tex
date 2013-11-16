@@ -31,8 +31,8 @@ The recent discoveries of planets around stars other than our own is among the m
 
 In this paper, we will use the following standard terminology.
 \begin{itemize}
-	\item An \emph{exosolar planet} is defined to be a planet that orbits a star other than the Sun.\footnote{The words \emph{exoplanet}, \emph{exosolar planet}, and \emph{extrasolar planet} all mean the same thing, and are used interchangeably.} The standard definition of a planet has two kinds of ambiguity: very low-mass objects in our solar system, such as Pluto, were defined to be ``dwarf planets,'' and the boundaries of this definition aren't entirely clear. Very high-mass planets, however, resemble very small stars; though they don't undergo hydrogen fusion, they look very much like a dim type of star called a brown dwarf. The boundary is somewhat arbitrarily delineated at 14 Jupiter masses. However, neither of these is a great concern in this paper: science is yet unable to detect Pluto-sized worlds around another star, so the low-mass ambiguity does not arise in this data, and the high-mass boundary is not as important: a classifier that discovers planets and small brown dwarfs is still useful. However, it will be helpful to distinguish these systems from eclipsing binaries (see below).
-	\item \emph{Planetary transit} is a method of exoplanet detection, In general, because planets are very dim relative to their bright host stars, they cannot be directly imaged, in the same way that it is difficult to detect a firefly near a searchlight from afar. Thus, several indirect methods exist. Planetary transit repeatedly checks the brightness of a star over time; periodic, regular dips in this output sometimes happen because an exoplanet crosses between its sun and the observer. Thus, a planet may be detected without direct observation.
+	\item An \emph{exosolar planet} is defined as in \cite{Ovr} to be a planet that orbits a star other than the Sun.\footnote{The words \emph{exoplanet}, \emph{exosolar planet}, and \emph{extrasolar planet} all mean the same thing, and are used interchangeably.} The standard definition of a planet has two kinds of ambiguity: very low-mass objects in our solar system, such as Pluto, were defined to be ``dwarf planets,'' and the boundaries of this definition aren't entirely clear. Very high-mass planets, however, resemble very small stars; though they don't undergo hydrogen fusion, they look very much like a dim type of star called a brown dwarf. The boundary is somewhat arbitrarily delineated at 13 Jupiter masses. However, neither of these is a great concern in this paper: science is yet unable to detect Pluto-sized worlds around another star, so the low-mass ambiguity does not arise in this data, and the high-mass boundary is not as important: a classifier that discovers planets and small brown dwarfs is still useful. However, it will be helpful to distinguish these systems from eclipsing binaries (see below).
+	\item \emph{Planetary transit} is a method of exoplanet detection, In general, because planets are very dim relative to their bright host stars, they cannot be directly imaged, in the same way that it is difficult to detect a firefly near a searchlight from afar. Thus, several indirect methods exist. Planetary transit repeatedly checks the brightness of a star over time; periodic, regular dips in this output sometimes happen because an exoplanet crosses between its sun and the observer. Thus, a planet may be detected without direct observation. See \cite{Trs} for more information on transiting exoplanets.
 	\item A \emph{lightcurve} is a graph of a star's brightness over time. A transiting exoplanet will thus manifest itself as a lightcurve that is relatively constant, but with regular, small dips corresponding to the transits. See Figure~\ref{curves} for two examples.
 	 The brightness is often given in units of magnitude rather than strict luminosity, because this runs over a relatively nicer range of values.
 	\begin{figure}
@@ -49,7 +49,7 @@ Until recently, most exoplanets weren't detected by transit; astronomers used an
 % Planet Hunters, maybe
 
 \section{Methodology}
-We obtained Kepler light curves from the Mikulski Archive for Space Telescopes. We first divided light curves into those corresponding to exoplanets and those corresponding to non-exoplanets. The light curves are represented as time series data, which means that each light curve is represented by a series of attributes at each time point within some range. The attributes of the light curve stored in the binary table and are data attributes that we are going to be looking at include:
+We obtained Kepler light curves from the Mikulski Archive for Space Telescopes (see \cite{mast}). Lightcurves are stored in the \texttt{.,fits} file format, so we used the AstroPy Python library, found at \cite{AstroPy}, to process these files. We first divided light curves into those corresponding to exoplanets and those corresponding to non-exoplanets. The light curves are represented as time series data, which means that each light curve is represented by a series of attributes at each time point within some range. The attributes of the light curve stored in the binary table and are data attributes that we are going to be looking at include:
 \begin{itemize}
 	\item TIME: The time at the midpoint of the light curve
 	\item SAP\_FLUX: Simple aperture photometry flux in units of electrons per second contained in the optimal aperture pixels
@@ -70,14 +70,13 @@ We obtained Kepler light curves from the Mikulski Archive for Space Telescopes. 
 	\item POS\_CORR2
 \end{itemize}
 
-<<<<<<< HEAD
 These lightcurves can be thought of as feature vectors in an enormously large-dimensional space, since they correspond to several data points over a large number of distinct observations. Thus, it will be necessary to do some feature selection.
 
 For this milestone, we chose to explicitly work with a few simple features rather than running a larger feature-selection algorithm. Specifically, for each data point above, we calculated the mean and standard deviation of the element over the entire time series. 
 %From here we can attempt to do several things. We can try to run some supervised learning classifiers using the arithmetic mean, maximum value, minimum value, range, and standard deviation of each data attribute as opposed to treating it as a time series. 
-This primitive form of filtering a time series into its global features is a crude way of using the time series data, but for now it should gives us a rough idea of how our data can be used for classification. We can then use some of the classifiers we learned, such as logistic regression, Naive Bayes classifiers, or support vector machines to train a classifier on these new features. 
+This primitive form of filtering a time series into its global features is a crude way of using the time series data, but for now it should gives us a rough idea of how our data can be used for classification. We can then use some of the classifiers we learned, such as logistic regression, Na\"ive Bayes classifiers, or support vector machines to train a classifier on these new features. 
 
-We are currently using 
+We are currently using an optimal margin classifier with the uninteresting
 
 Given that our data is in the form of time series, we will want to look at different forms of time series analysis, such as dynamic time warping or Hidden Markov Models. 
 
@@ -89,4 +88,35 @@ Given that our data is in the form of time series, we will want to look at diffe
 \section{Future Work}
 
 % bibliography of some sort
+\begin{thebibliography}{9}
+\bibitem{AstroPy}{
+	Robiatille, Thomas P., et. al.
+	\href{http://www.aanda.org/articles/aa/pdf/2013/10/aa22068-13.pdf}{\textit{Astropy: A community Python package for astronomy}}.
+	Astronomy and Astrophysics, Volume 558, October 2013.
+}
+\bibitem{LibLinear}{
+	R.-E. Fan, K.-W. Chang, C.-J. Hsieh, X.-R. Wang, and C.-J. Lin.
+	\href{http://www.csie.ntu.edu.tw/~cjlin/papers/liblinear.pdf}{\textit{LIBLINEAR: A library for large linear classification}}.
+	\href{jmlr.org}{Journal of Machine Learning Research} 9(2008), 1871-1874.
+}
+\bibitem{Weka}{
+	Mark Hall, Eibe Frank, Geoffrey Holmes, Bernhard Pfahringer, Peter Reutemann, Ian H. Witten (2009);
+	\href{http://www.sigkdd.org/sites/default/files/issues/11-1-2009-07/p2V11n1.pdf}{\textit{The WEKA Data Mining Software: An Update}};
+	SIGKDD Explorations, Volume 11, Issue 1. 
+}
+% for the general overview, I guess?
+\bibitem{Ovr}{
+	The Extrasolar Planets Encyclopedia. \url{http://www.exoplanet.eu/} November 15, 2013.
+}
+\bibitem{Trs}{
+	Malatesta, Kerri. \href{http://www.aavso.org/vsots_exoplanets}{\emph{The Transiting Exoplanets HD 209458 and TrES-1}}.
+	American Association of Variable Star Observers.
+	June 8, 2012.
+}
+\bibitem{mast}{
+	Mikulski Archive for Space Telescopes (MAST).
+	\url{http://archive.stsci.edu/kepler/publiclightcurves.html}
+	January 30, 2013.
+}
+\end{thebibliography}
 \end{document}
