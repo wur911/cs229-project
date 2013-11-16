@@ -6,6 +6,7 @@
 
 \documentclass{amsart}
 \input{macros}
+\geometry{margin=0.9in}
 \begin{document}
 \title{Astronomical Implications of Machine Learning}
 \author{
@@ -78,7 +79,7 @@ This primitive form of filtering a time series into its global features is a cru
 
 We are currently using an optimal margin classifier with the linear kernel induced by $\phi(\vec x) = \vec x$. We specifically use the \textsc{Liblinear} classifier \cite{LibLinear} to accomplish this. However, given the relative complexity of the problem, we do not expect this to ultimately be the best approach. We chose it in order to begin classifying data, so that we have actual numbers to work with, rather than just ideas. In particular, there are good reasons to assume that the problem is not necessarily linearly separable: intuitively, there are two major astronomical constraints on a lightcurve. If there are no dips in the lightcurve, then there is probably no transiting or eclipsing body around the parent star (or it is too small to be detected with current technology); yet if the changes in the magnitude are too large, then the transiting object is unlikely to be a planet; instead, it could be a brown dwarf or even a stellar companion (in which case the system is an eclipsing binary). Thus, the exoplanets lie in between these two constraints in the ``direction'' of the depth of the magnitude loss (i.e. some line in the feature space that accounts for these particular differences in the lightcurves), so a linear classifier that doesn't use a higher-dimensional kernel will be inaccurate.
 
-Given that our data is in the form of time series, we will want to look at different forms of time series analysis, such as dynamic time warping or Hidden Markov Models. The Weka library, found at \cite{Weka}, provides implementations of such algorithms.
+Given that our data is in the form of time series, we will want to look at different forms of time series analysis, such as dynamic time warping or Hidden Markov Models. The Weka library, found at \cite{Weka}, provides implementations of such algorithms. This, combined with a more powerful feature-selection algorithm, should give us a more effective classifier.
 
 % and so on.
 \section{Results}
