@@ -82,8 +82,10 @@ Given that our data is in the form of time series, we will want to look at diffe
 
 % and so on.
 \section{Results}
+Using our features, which included the mean and standard deviation of the data attributes, we ran a support vector machine classifier using liblinear. We had 37 instances of nonexamples and 9 instances of exoplanet examples. We decided to train on 31 instances and test on 15 instances. Our accuracy was around 53.33\% as we got 8 test cases right out of 15. Our mean squared error was around 0.466, which is relatively high. 
 
 \section{Analysis}
+One major problem so far is that we are lacking sufficient training and test instances. With a greater number of training instances, we can hopefully train a more accurate model that will be better at predicting labels for the test data instances. In particular, we are lacking a good number of data instances of confirmed exoplanets. In such a case, we would aim to use cross validation in order to conserve our data since we have so little. Thus we aim to not only find a larger data set, but also consider cross validation as remedies to our lack of data.
 
 \section{Future Work}
 Since we are dealing with time series data, we want to be able to more powerful tools to see what we can learn more from the data. One possibility is to look at dynamic time warping. Dynamic time warping (DTW), which is an algorithm to measure the similarity between two time sequences that may vary in time or speed. Given that our exoplanets may have varying orbital periods and sizes, DTW may help in detecting more subtle patterns that may be used to distinguish exoplanets or eclipsing binaries. While DTW is a exceptional algorithm, it has one major flaw - it is computionally demanding. Nonetheless, using DTW si definitely another area of improvement we can explore.
