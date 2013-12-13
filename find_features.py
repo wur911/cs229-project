@@ -16,19 +16,19 @@ if len(sys.argv) == 1:
 filename = sys.argv[1]
 hdulist = fits.open(filename)
 
-feature_list = []
+featurelist = []
+attributeIndices = [3,5,7,14,16,18,19]
 
 # find the mean
-#print "Find the arithmetic mean"
-for x in range(0,20):
+for x in attributeIndices:
 	sumvalues = 0
 	for y in range(0,len(hdulist[1].data)):
 		if not math.isnan(hdulist[1].data[y][x]):
 			sumvalues += hdulist[1].data[y][x]
 	avg = sumvalues/len(hdulist[1].data)
-#	print avg
-	feature_list.append(avg)
-	
+	featurelist.append(avg)
+print ",".join([str(n) for n in featurelist])
+
 # find the max and min
 #print "Find the max"
 #for x in range(0,20):
@@ -60,13 +60,13 @@ for x in range(0,20):
 
 # find the standard deviation
 #print "Find the standard deviation"
-for x in range(0,20):
-	sumsquares = 0
-	for y in range(0,len(hdulist[1].data)):
-		if not math.isnan(hdulist[1].data[y][x]):
-			sumsquares += (hdulist[1].data[y][x]-feature_list[x])**2
-	variance = sumsquares/len(hdulist[1].data)
-	stdev = variance**0.5
-	feature_list.append(stdev)
+#for x in range(0,20):
+#	sumsquares = 0
+#	for y in range(0,len(hdulist[1].data)):
+#		if not math.isnan(hdulist[1].data[y][x]):
+#			sumsquares += (hdulist[1].data[y][x]-feature_list[x])**2
+#	variance = sumsquares/len(hdulist[1].data)
+#	stdev = variance**0.5
+#	feature_list.append(stdev)
 
-print ' '.join([str(n) for n in feature_list])
+#print ' '.join([str(n) for n in feature_list])
