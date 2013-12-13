@@ -1,0 +1,405 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.SimpleLogistic -I 0 -M 500 -H 50 -W 0.0
+Relation:     examples-weka.filters.unsupervised.attribute.NumericToNominal-Rlast
+Instances:    200
+Attributes:   8
+              SAP_FLUX
+              SAP_BKG
+              PDCSAP_FLUX
+              MOM_CENTR1
+              MOM_CENTR2
+              POS_CORR1
+              POS_CORR2
+              RESULT
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+SimpleLogistic:
+
+Class 0 :
+1.14 + 
+[SAP_BKG] * 0    +
+[MOM_CENTR1] * -0.02
+
+Class 1 :
+-1.14 + 
+[SAP_BKG] * 0    +
+[MOM_CENTR1] * 0.02
+
+
+Time taken to build model: 0.3 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         159               79.5    %
+Incorrectly Classified Instances        41               20.5    %
+Kappa statistic                          0.59  
+Mean absolute error                      0.2548
+Root mean squared error                  0.3341
+Relative absolute error                 50.9583 %
+Root relative squared error             66.8255 %
+Coverage of cases (0.95 level)         100      %
+Mean rel. region size (0.95 level)      87.5    %
+Total Number of Instances              200     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.900    0.310    0.744      0.900    0.814      0.603    0.933     0.942     0
+                 0.690    0.100    0.873      0.690    0.771      0.603    0.933     0.938     1
+Weighted Avg.    0.795    0.205    0.809      0.795    0.793      0.603    0.933     0.940     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 90 10 |  a = 0
+ 31 69 |  b = 1
+
+
+
+
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a
+Relation:     examples-weka.filters.unsupervised.attribute.NumericToNominal-Rlast
+Instances:    200
+Attributes:   8
+              SAP_FLUX
+              SAP_BKG
+              PDCSAP_FLUX
+              MOM_CENTR1
+              MOM_CENTR2
+              POS_CORR1
+              POS_CORR2
+              RESULT
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+Sigmoid Node 0
+    Inputs    Weights
+    Threshold    -0.002861031477889693
+    Node 2    -4.714321986689474
+    Node 3    6.317564708335595
+    Node 4    -0.9109482184206616
+    Node 5    0.7671331761830263
+Sigmoid Node 1
+    Inputs    Weights
+    Threshold    0.0022304892542934192
+    Node 2    4.691809217732332
+    Node 3    -6.31706701308739
+    Node 4    0.9529952135877944
+    Node 5    -0.7607060212830952
+Sigmoid Node 2
+    Inputs    Weights
+    Threshold    -0.48699038116825644
+    Attrib SAP_FLUX    -0.2737358421835203
+    Attrib SAP_BKG    -1.7450772929700442
+    Attrib PDCSAP_FLUX    -0.39313727127434395
+    Attrib MOM_CENTR1    4.110857563949577
+    Attrib MOM_CENTR2    3.5781707338717688
+    Attrib POS_CORR1    -0.8853575997929533
+    Attrib POS_CORR2    -0.4013914335219504
+Sigmoid Node 3
+    Inputs    Weights
+    Threshold    1.1844333568550371
+    Attrib SAP_FLUX    2.102180633013601
+    Attrib SAP_BKG    10.061692535413163
+    Attrib PDCSAP_FLUX    2.5046952331073107
+    Attrib MOM_CENTR1    -13.159786955195234
+    Attrib MOM_CENTR2    2.300224314263763
+    Attrib POS_CORR1    1.9208257185761777
+    Attrib POS_CORR2    -0.195638353173435
+Sigmoid Node 4
+    Inputs    Weights
+    Threshold    -0.5211401518276176
+    Attrib SAP_FLUX    0.09542487668607409
+    Attrib SAP_BKG    -0.5286478584378985
+    Attrib PDCSAP_FLUX    0.04227024047884
+    Attrib MOM_CENTR1    2.071423723023238
+    Attrib MOM_CENTR2    1.6525560780871307
+    Attrib POS_CORR1    -0.6032467515453471
+    Attrib POS_CORR2    -0.4125177779775658
+Sigmoid Node 5
+    Inputs    Weights
+    Threshold    -0.3645115865240813
+    Attrib SAP_FLUX    0.934345207184083
+    Attrib SAP_BKG    1.8224215328773246
+    Attrib PDCSAP_FLUX    0.9446698934328605
+    Attrib MOM_CENTR1    -1.1286201817630521
+    Attrib MOM_CENTR2    0.1529893089188571
+    Attrib POS_CORR1    -0.3988363380218156
+    Attrib POS_CORR2    -0.5386942412745833
+Class 0
+    Input
+    Node 0
+Class 1
+    Input
+    Node 1
+
+
+Time taken to build model: 0.4 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         163               81.5    %
+Incorrectly Classified Instances        37               18.5    %
+Kappa statistic                          0.63  
+Mean absolute error                      0.1765
+Root mean squared error                  0.2987
+Relative absolute error                 35.2934 %
+Root relative squared error             59.7351 %
+Coverage of cases (0.95 level)         100      %
+Mean rel. region size (0.95 level)      67.75   %
+Total Number of Instances              200     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.740    0.110    0.871      0.740    0.800      0.637    0.928     0.936     0
+                 0.890    0.260    0.774      0.890    0.828      0.637    0.928     0.934     1
+Weighted Avg.    0.815    0.185    0.822      0.815    0.814      0.637    0.928     0.935     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 74 26 |  a = 0
+ 11 89 |  b = 1
+
+
+
+
+
+
+
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0"
+Relation:     examples-weka.filters.unsupervised.attribute.NumericToNominal-Rlast
+Instances:    200
+Attributes:   8
+              SAP_FLUX
+              SAP_BKG
+              PDCSAP_FLUX
+              MOM_CENTR1
+              MOM_CENTR2
+              POS_CORR1
+              POS_CORR2
+              RESULT
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+SMO
+
+Kernel used:
+  Linear Kernel: K(x,y) = <x,y>
+
+Classifier for classes: 0, 1
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0142 * (normalized) SAP_FLUX
+ +      -0.1647 * (normalized) SAP_BKG
+ +      -0.0008 * (normalized) PDCSAP_FLUX
+ +       1.3497 * (normalized) MOM_CENTR1
+ +       1.9035 * (normalized) MOM_CENTR2
+ +       0.0227 * (normalized) POS_CORR1
+ +       0.0452 * (normalized) POS_CORR2
+ -       1.2076
+
+Number of kernel evaluations: 2559 (60.594% cached)
+
+
+
+Time taken to build model: 0.03 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         166               83      %
+Incorrectly Classified Instances        34               17      %
+Kappa statistic                          0.66  
+Mean absolute error                      0.17  
+Root mean squared error                  0.4123
+Relative absolute error                 34      %
+Root relative squared error             82.4621 %
+Coverage of cases (0.95 level)          83      %
+Mean rel. region size (0.95 level)      50      %
+Total Number of Instances              200     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 1.000    0.340    0.746      1.000    0.855      0.702    0.830     0.746     0
+                 0.660    0.000    1.000      0.660    0.795      0.702    0.830     0.830     1
+Weighted Avg.    0.830    0.170    0.873      0.830    0.825      0.702    0.830     0.788     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 100   0 |   a = 0
+  34  66 |   b = 1
+
+
+
+
+
+
+=== Run information ===
+
+Scheme:       weka.classifiers.bayes.NaiveBayes 
+Relation:     examples-weka.filters.unsupervised.attribute.NumericToNominal-Rlast
+Instances:    200
+Attributes:   8
+              SAP_FLUX
+              SAP_BKG
+              PDCSAP_FLUX
+              MOM_CENTR1
+              MOM_CENTR2
+              POS_CORR1
+              POS_CORR2
+              RESULT
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+Naive Bayes Classifier
+
+                     Class
+Attribute                0           1
+                     (0.5)       (0.5)
+=======================================
+SAP_FLUX
+  mean          546745.4315 125322.2387
+  std. dev.     993191.7227 108076.1805
+  weight sum            100         100
+  precision      18110.1501  18110.1501
+
+SAP_BKG
+  mean            4003.1473   2392.4264
+  std. dev.       3232.5167   1378.9408
+  weight sum            100         100
+  precision         72.7845     72.7845
+
+PDCSAP_FLUX
+  mean          548917.6194 132160.2448
+  std. dev.      981163.987 107304.2811
+  weight sum            100         100
+  precision      18104.1431  18104.1431
+
+MOM_CENTR1
+  mean              42.2957    219.9085
+  std. dev.         22.8585    124.8908
+  weight sum            100         100
+  precision          2.9169      2.9169
+
+MOM_CENTR2
+  mean              68.7294    531.9857
+  std. dev.         21.3992    365.0295
+  weight sum            100         100
+  precision          4.9446      4.9446
+
+POS_CORR1
+  mean              -0.4775      -1.427
+  std. dev.          0.8742      4.1097
+  weight sum            100         100
+  precision          0.1353      0.1353
+
+POS_CORR2
+  mean              -0.9626     -2.7897
+  std. dev.          1.5612      8.7284
+  weight sum            100         100
+  precision          0.2581      0.2581
+
+
+
+Time taken to build model: 0.02 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         163               81.5    %
+Incorrectly Classified Instances        37               18.5    %
+Kappa statistic                          0.63  
+Mean absolute error                      0.1903
+Root mean squared error                  0.4093
+Relative absolute error                 38.0635 %
+Root relative squared error             81.8689 %
+Coverage of cases (0.95 level)          85      %
+Mean rel. region size (0.95 level)      55.75   %
+Total Number of Instances              200     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.940    0.310    0.752      0.940    0.836      0.651    0.876     0.875     0
+                 0.690    0.060    0.920      0.690    0.789      0.651    0.876     0.903     1
+Weighted Avg.    0.815    0.185    0.836      0.815    0.812      0.651    0.876     0.889     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 94  6 |  a = 0
+ 31 69 |  b = 1
+
+
+
+
+
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.LibSVM -S 0 -K 0 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.001 -P 0.1 -model /home/ray/cs229-project/weka-3-7-10 -seed 1
+Relation:     examples-weka.filters.unsupervised.attribute.NumericToNominal-Rlast
+Instances:    200
+Attributes:   8
+              SAP_FLUX
+              SAP_BKG
+              PDCSAP_FLUX
+              MOM_CENTR1
+              MOM_CENTR2
+              POS_CORR1
+              POS_CORR2
+              RESULT
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+LibSVM wrapper, original code by Yasser EL-Manzalawy (= WLSVM)
+
+Time taken to build model: 12.46 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         128               64      %
+Incorrectly Classified Instances        72               36      %
+Kappa statistic                          0.28  
+Mean absolute error                      0.36  
+Root mean squared error                  0.6   
+Relative absolute error                 72      %
+Root relative squared error            120      %
+Coverage of cases (0.95 level)          64      %
+Mean rel. region size (0.95 level)      50      %
+Total Number of Instances              200     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.710    0.430    0.623      0.710    0.664      0.283    0.640     0.587     0
+                 0.570    0.290    0.663      0.570    0.613      0.283    0.640     0.593     1
+Weighted Avg.    0.640    0.360    0.643      0.640    0.638      0.283    0.640     0.590     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 71 29 |  a = 0
+ 43 57 |  b = 1
+
+
