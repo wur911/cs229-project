@@ -6,7 +6,8 @@
 
 \documentclass{amsart}
 \input{macros}
-\geometry{margin=0.8in}
+\newcommand{\mat}[4]{\begin{bmatrix} {#1} & {#2}\\{#3} & {#4}\end{bmatrix}}
+\geometry{margin=0.75in}
 \begin{document}
 \title{Astronomical Implications of Machine Learning}
 \author{
@@ -23,8 +24,8 @@
 
 % Abstract might not be necessary
 \begin{abstract}
-In this project we aim to use supervised learning to develop a classifier for stellar lightcurves
- to detect whether they demonstrate the existence of exosolar planets. We will use various features selection methods;
+In this project we use supervised learning to develop a classifier for stellar lightcurves
+ to detect whether they demonstrate the existence of exosolar planets. We use various features selection methods;
  in particular we will be using dynamic time warping to measure the similarity between two temporal sequences.
 \end{abstract}
 \section{Introduction}
@@ -41,7 +42,7 @@ In this paper, we will use the following standard terminology.
 	\centering
 	\label{curves}
 	\includegraphics[width=6in]{transit_lightcurve}
-	\caption{Lightcurves (graphs of stellar brightness versus time) of two planetary transit systems discovered by Kepler. The regular small dips correspond to the planet passing in front of its sun and slightly diminishing the observed magnitude. Source: NASA}%http://kepler.nasa.gov/education/activities/transitTracks/ if we make a real bibliography
+	\caption{Lightcurves (graphs of stellar brightness versus time) of two planetary transit systems discovered by Kepler. The regular small dips correspond to the planet passing in front of its sun and slightly diminishing the observed magnitude. Source: \cite{NASATR}}%http://kepler.nasa.gov/education/activities/transitTracks/ if we make a real bibliography
 	\end{figure}
 	\item An \emph{eclipsing binary} is a pair of stars that orbit each other, but such that each eclipses the other from the Earth's point of view during the orbit. These generally don't contain transiting exoplanets, but instead form an important negative example. Their lightcurves look like those of exoplanets, but they aren't exoplanets.
 \end{itemize}
@@ -51,28 +52,28 @@ Until recently, most exoplanets weren't detected by transit; astronomers used an
 % Planet Hunters, maybe
 
 \section{Methodology}
-We obtained Kepler light curves from the Mikulski Archive for Space Telescopes (see \cite{mast}). Lightcurves are stored in the \texttt{.fits} file format, so we used the AstroPy Python library, found at \cite{AstroPy}, to parse them. We first divided light curves into those corresponding to exoplanets and those corresponding to non-exoplanets. The non-exoplanets contained "non-variable" stars, which had relatively uniform light curves as well as stars with variable light curves that did not have exoplanets. These variable light curves were caused by other reasons, including binary star systems and intrinsically variable stars. The light curves are represented as time series data, which means that each light curve is represented by a series of attributes at each time point within some range. The attributes of the light curve stored in the binary table include:
+We obtained Kepler light curves from the Mikulski Archive for Space Telescopes (see \cite{mast}). Lightcurves are stored in the \texttt{.fits} file format, so we used the AstroPy Python library, found at \cite{AstroPy}, to parse them. We first divided light curves into those corresponding to exoplanets and those corresponding to non-exoplanets. The non-exoplanets contained ``non-variable'' stars, which had relatively uniform light curves as well as stars with variable light curves that did not have exoplanets. These variable light curves were caused by other reasons, including eclipsing binary systems as well as intrinsically variable stars. The light curves are represented as time series data, which means that each light curve is represented by a series of attributes at each time point within some range. The attributes of the light curve stored in the binary table include:
 \begin{itemize}
-	\item TIME: The time at the midpoint of the light curve
-	\item SAP\_FLUX: Simple aperture photometry flux in units of electrons per second contained in the optimal aperture pixels
-	\item SAP\_FLUX\_ERR: The error in SAP flux in electrons per second
-	\item SAP\_BKG: The total background flux summed over the optimal aperture
-	\item SAP\_BKG\_ERR: The error in the background flux
-	\item PDCSAP\_FLUX: Flux after Presearch Data Conditioning (PDC) has accounted for systematic error sources such as drift or focus change
-	\item PDCSAP\_FLUX\_ERR: The error in PDCSAP flux
-	\item PSF\_CENTR1: The column centroid obtained by fitting the point spread function
-	\item PSF\_CENTR1\_ERR: The error in PSF centroid 1
-	\item PSF\_CENTR2: The row centroid obtained by fitting the point spread function
-	\item PSF\_CENTR2\_ERR: The error in PSF centroid 2
-	\item MOM\_CENTR1: The column value for the flux weighted centroid (first moment)
-	\item MOM\_CENTR1\_ERR: The error in MOM centroid 1
-	\item MOM\_CENTR2: The row value for the flux weighted centroid (first moment)
-	\item MOM\_CENTR2\_ERR: The error in MOM centroid 2
-	\item POS\_CORR1: The column position correction based on bright stars 
-	\item POS\_CORR2: The row position correction based on bright stars
+	\item \verb+TIME+: The time at the midpoint of the light curve
+	\item \verb+SAP_FLUX+: Simple aperture photometry flux in units of electrons per second contained in the optimal aperture pixels
+	\item \verb+SAP_FLUX_ERR+: The error in SAP flux in electrons per second
+	\item \verb+SAP_BKG+: The total background flux summed over the optimal aperture
+	\item \verb+SAP_BKG_ERR+: The error in the background flux
+	\item \verb+PDCSAP_FLUX+: Flux after Presearch Data Conditioning (PDC) has accounted for systematic error sources such as drift or focus change
+	\item \verb+PDCSAP_FLUX_ERR+: The error in PDCSAP flux
+	\item \verb+PSF_CENTR1+: The column centroid obtained by fitting the point spread function
+	\item \verb+PSF_CENTR1_ERR+: The error in PSF centroid 1
+	\item \verb+PSF_CENTR2+: The row centroid obtained by fitting the point spread function
+	\item \verb+PSF_CENTR2_ERR+: The error in PSF centroid 2
+	\item \verb+MOM_CENTR1+: The column value for the flux weighted centroid (first moment)
+	\item \verb+MOM_CENTR1_ERR+: The error in MOM centroid 1
+	\item \verb+MOM_CENTR2+: The row value for the flux weighted centroid (first moment)
+	\item \verb+MOM_CENTR2_ERR+: The error in MOM centroid 2
+	\item \verb+POS_CORR1+: The column position correction based on bright stars 
+	\item \verb+POS_CORR2+: The row position correction based on bright stars
 \end{itemize}
 
-We decided early on that we should build a classification model on features extracted only from a couple of these attributes since not all the attributes were relevant to our query. We decided to go with attributes "SAP\_FLUX", "SAP\_BKG", "PDCSAP\_FLUX", "MOM\_CENTR1", "MOM\_CENTR2", "POS\_CORR1", "POS\_CORR2". These values in particular were nonnull and relayed important data about the light curve. 
+We decided early on that we should build a classification model on features extracted only from a couple of these attributes since not all the attributes were relevant to our query. We decided to go with attributes \verb+SAP_FLUX+, \verb+SAP_BKG+, \verb+PDCSAP_FLUX+, \verb+MOM_CENTR1+, \verb+MOM_CENTR2+, \verb+POS_CORR1+, and \verb+POS_CORR2+. These values in particular were always defined over the entire time interval and provided important data about the light curve. 
 
 Since our lightcurves are time series, which are large series of data points separated by a uniform time interval, it is both extremely difficult and unhelpful to train any sort of classifier over the raw data points. Instead, we will need to extract features from each time series. These features have to be both manageable and descriptive of the light curve.
 
@@ -83,41 +84,49 @@ Since our lightcurves are time series, which are large series of data points sep
 %This primitive form of filtering a time series into its global features is a crude way of using the time series data, but for now it should gives us a rough idea of how our data can be used for classification. We can then use some of the classifiers we learned, such as logistic regression, Na\"ive Bayes classifiers, or support vector machines to train a classifier on these new features. 
 We decided to try a variety of feature selection methods. Initially, we decided to look for global features such as the arithmetic average, maximum, and minimum values for each attribute. These global features provide very high-level, general descriptions of the time series. Thus they provide a good set of initial features, but can only provide a limited amount of detail. Using metafeatures can be used to provide a more accurate description of the time series, but we decided to opt for a different type of feature.
 
-Given that we were examining light curves, which vary in time and speed due to differences in the size and shape of the orbiting planets as well, differences in orbital periods, and differences in the instrument recordings, we want to be able to detect common patterns that are indicative of exoplanets regardless of these differences between different planets and stars. So to do this, we turned to an algorithm called dynamic time warping. Dynamic time warping (DTW) calculates the optimal match between two time series by calculating a measure of similarity independent of the time, speed, and acceleration of the time series. 
+Given that we were examining light curves, which vary in time and speed due to differences in the size and shape of the orbiting planets as well, differences in orbital periods, and differences in the instrument recordings, we want to be able to detect common patterns that are indicative of exoplanets regardless of these differences between different planets and stars. So to do this, we turned to an algorithm called dynamic time warping. Dynamic time warping (DTW), outlined in \cite{dtw}, calculates the optimal match between two time series by calculating a measure of similarity independent of the time, speed, and acceleration of the time series. 
 
-We decided to use dynamic time warping to calculate the similarity of each light curve with a "baseline" light curve. To find an appropriate "baseline" light curve, we took a relatively flat light curve from our training set of light curves without exoplanets. Then we used dynamic time warping to calculate a measure of similarity between each light curve and this "baseline". We used this result as one of our features in addition to our global features.
+We decided to use dynamic time warping to calculate the similarity of each light curve with a ``baseline'' light curve. To find an appropriate baseline light curve, we took a relatively flat light curve from our training set of light curves without exoplanets. Then we used dynamic time warping to calculate a measure of similarity between each light curve and this baseline. We used this result as one of our features in addition to our global features.
 
-After extracting all of our appropriate features, we needed to train a classifier. We used an open source machine learning algorithm suite called Weka, developed at the University of Waikato in New Zealand. We used a variety of classification methods including logistic regression, Na\"ive Bayes, support vector regression (SVR), and multilayer perceptron. We found that SVM did not work particularly well, so we used a modified SVM algorithm called RegSMOImproved\cite{SMOreg}. In particular, we used a polynomial kernel to map the data to a higher dimension and then use the altered SMO algorithm to calculate a regression model. We also made use of the multilayer perceptron, an artificial neural network model that learns through backpropgation. 
+After extracting all of our appropriate features, we needed to train a classifier. We used an open source machine learning algorithm suite called Weka (\cite{Weka}), developed at the University of Waikato in New Zealand. We used a variety of classification methods including logistic regression, Na\"ive Bayes, support vector regression (SVR), and multilayer perceptron. We found that SVM did not work particularly well, so we used a modified SVM algorithm called RegSMOImproved\cite{SMOreg}. In particular, we used a polynomial kernel to map the data to a higher dimension and then use the altered SMO algorithm to calculate a regression model. We also made use of the multilayer perceptron, an artificial neural network model that learns through backpropgation. 
 
-We trained our classifiers on our data sets using 10-fold cross validation.
+We tested our classifiers on our data sets using 10-fold cross validation. For testing the features generated by DTW, we had 150 light curves that were either confirmed exoplanets or were labeled as exoplanets but unconfirmed as of August 2013, and 103 light curves that were confirmed to not be exoplanets. So in total our training set size was 253 instances. For the means-of-attributes features, we had about 200 data points, split evenly between those with confirmed planetary transits and no known transits.
 %We are currently using an optimal margin classifier with the linear kernel induced by $\phi(\vec x) = \vec x$. We specifically use the \textsc{Liblinear} classifier \cite{LibLinear} to accomplish this. However, given the relative complexity of the problem, we do not expect this to ultimately be the best approach. We chose it in order to begin classifying data, so that we have actual numbers to work with, rather than just ideas. 
 
 %Given that our data is in the form of time series, we will want to look at different forms of time series analysis, such as dynamic time warping or Hidden Markov Models. The Weka library, found at \cite{Weka}, provides implementations of such algorithms. This, combined with a more powerful feature-selection algorithm, should give us a more effective classifier.
 
 
 \section{Results}
-We had 150 light curves that were either confirmed exoplanets or were labeled as exoplanets but unconfirmed as of August 2013. We had 103 light curves that were confirmed to not be exoplanets. So in total our training set size was 253 instances. 
-
-% TODO Logistic Regression: model, correctly classified, incorrectly classified, mean absolute error, root mean squared error, confusion matrix
-
-% TODO Naive Bayes
-
-% TODO SMOreg
-
-% TODO Multilayer perceptron
-
-We can take a look at how our logistic regression model and multilayer perceptron model compare. The multilayer perceptron model takes all the input values (the fatures we collected) and returns a single value between -1 and 1 that is used to distinguish light curves with exoplanets (those with value greater than 0) and light curves without exoplanets (those with value less than 0). We can look at what values our models gave for our training set. The results are plotted in the curves below.
+%We had 150 light curves that were either confirmed exoplanets or were labeled as exoplanets but unconfirmed as of August 2013. We had 103 light curves that were confirmed to not be exoplanets. So in total our training set size was 253 instances. 
+See Table~\ref{resultstable} for the overview of results; in general, a variety of algorithms performed quite well on this data, averaging an about 80\% classification accuracy.
+\begin{table}[!ht]
+	\label{resultstable}
+	\begin{tabular}{r|c c c c c}
+	Model & Correct & Incorrect & Mean absolute error & RMS error & Confusion matrix\\
+	\hline
+	Logistic (means of attributes) & 159 (79.5\%) & 41 (20.5\%) & $0.2548$ & $0.3341$ & $\mat{90}{10}{31}{69}$\\
+	Logistic (DTW) & 213 (84.2\%) & 40 (15.8\%) & $0.2183$ & $0.3315$ & $\mat{135}{15}{25}{78}$\\
+	Na\"ive Bayes (means of attributes) & 163 (81.5\%) & 37 (18.5\%) & $0.1903$ & $0.4903$ & $\mat{94}{6}{31}{69}$\\
+	Na\"ive Bayes (DTW) & 199 (78.7\%) & 54 (21.3\%) & $0.2118$ & $0.4408$ & $\mat{140}{10}{44}{59}$\\
+	SMO (means of attributes) & 166 (83\%) & 34 (17\%) & $0.17$ & $0.4123$ & $\mat{100}{0}{34}{66}$\\
+	SMO (DTW) & 200 (79.1\%) & 53 (21\%) & $0.2095$ & $0.4577$ & $\mat{150}{0}{53}{50}$\\
+	Perceptron (means of attributes) & 163 (81.5\%) & 37 (18.5\%) & $0.1765$ & $0.2987$ & $\mat{74}{26}{11}{89}$\\
+	Perceptron (DTW) & 208 (82.2\%) & 45 (17.8\%) & $0.2086$ & $0.3354$ & $\mat{136}{14}{31}{72}$
+	\end{tabular}
+	\caption{A summary of cross-validation results. Here, RMS error is the root-mean-squared error, and all confusion matrices in this table are of the form $A = (a_{ij})$, where $a_{ij}$ is the number of instances classified as $y = j$ during cross-validation that were actually from group $i$.}
+\end{table}
+We can take a look more specifically at how our logistic regression model and multilayer perceptron model compare. The multilayer perceptron model takes all the input values (the features we collected) and returns a single value between $-1$ and $1$ that is used to distinguish light curves with exoplanets (those with value greater than 0) and light curves without exoplanets (those with value less than 0). We can look at what values our models gave for our training set. The results are plotted in Figures~\ref{logistic} and \ref{multilayer}, and illustrate how the similar accuracies in these algorithms belies very different classfication boundaries.
 	\begin{figure}
 	\centering
 	\label{logistic}
 	\includegraphics[width=6in]{logistic_regression}
-	\caption{Lightcurves (graphs of stellar brightness versus time) of two planetary transit systems discovered by Kepler. The regular small dips correspond to the planet passing in front of its sun and slightly diminishing the observed magnitude. Source: NASA}%http://kepler.nasa.gov/education/activities/transitTracks/ if we make a real bibliography
+	\caption{The margin curve for the logistic regression classifier. Here, the steeper the boundary line, the greater the margin between the two sets. Compare to Figure~\ref{multilayer}.}
 	\end{figure}
 	\begin{figure}
 	\centering
 	\label{multilayer}
 	\includegraphics[width=6in]{multilayer_perceptron}
-	\caption{Lightcurves (graphs of stellar brightness versus time) of two planetary transit systems discovered by Kepler. The regular small dips correspond to the planet passing in front of its sun and slightly diminishing the observed magnitude. Source: NASA}%http://kepler.nasa.gov/education/activities/transitTracks/ if we make a real bibliography
+	\caption{The margin curve for the multilayer perceptron; compare with Figure~\ref{logistic}. Even though they had very similar error rates, their margin curves look very different.}
 	\end{figure}
 	
 
@@ -125,36 +134,19 @@ We can take a look at how our logistic regression model and multilayer perceptro
 %One major problem so far is that we are lacking sufficient training and test instances. With a greater number of training instances, we can hopefully train a more accurate model that will be better at predicting labels for the test data instances. In particular, we are lacking a good number of data instances of confirmed exoplanets. In such a case, we would aim to use cross validation in order to conserve our data since we have so little. Thus we aim to not only find a larger data set, but also consider cross validation as a remedy to our lack of data.
 
 % TODO talk about data
+We were pleasantly surprised to see such high accuracy rates from these algorithms; we went into this project assuming that issues such as noise in the data and the difficulty of programatically distinguishing transiting planets from eclipsing binaries would make this project difficult. In particular, there are good reasons to assume that the problem is not necessarily linearly separable: intuitively, there are two major astronomical constraints on a lightcurve. If there are no dips in the lightcurve, then there is probably no transiting or eclipsing body around the parent star (or it is too small to be detected with current technology); yet if the changes in the magnitude are too large, then the transiting object is unlikely to be a planet; instead, it could be a brown dwarf or even a stellar companion (in which case the system is an eclipsing binary). Thus, the exoplanets lie in between these two constraints in the ``direction'' of the depth of the magnitude loss (i.e. some line in the feature space that accounts for these particular differences in the lightcurves), so a linear classifier that doesn't use a higher-dimensional kernel will be inaccurate.
 
-In particular, there are good reasons to assume that the problem is not necessarily linearly separable: intuitively, there are two major astronomical constraints on a lightcurve. If there are no dips in the lightcurve, then there is probably no transiting or eclipsing body around the parent star (or it is too small to be detected with current technology); yet if the changes in the magnitude are too large, then the transiting object is unlikely to be a planet; instead, it could be a brown dwarf or even a stellar companion (in which case the system is an eclipsing binary). Thus, the exoplanets lie in between these two constraints in the ``direction'' of the depth of the magnitude loss (i.e. some line in the feature space that accounts for these particular differences in the lightcurves), so a linear classifier that doesn't use a higher-dimensional kernel will be inaccurate.
-
-
+This could very well be why the SVMs were snarled by this classification question; their attempts to fit a clean decision boundary couldn't account for all of the edge cases. However, other classifiers are less concerned with the shape of the decision boundary, as classification is done less geometrically. Thus, these classifiers were more successful, and with feature selection optimized for time-series data, were able to perform very well.
 \section{Future Work}
-There are still several improvements that could be made. For one, we can run a clustering algorithm beforehand to group together light curves that have similar brightness and similar metafeatures. Thus, we would have clusters of stars that have similar apparent brightness. Then we can select from each cluster a light curve that contains a star that is known to not have any noticeable variability (exoplanet, binary system, variable star, etc). Then we can run the DTW algorithm to compare each star in that cluster to the non-variable star in order to obtain a even more "normalized" measure of similarity between light curves. 
+There are still several improvements that could be made. For one, we can run a clustering algorithm beforehand to group together light curves that have similar brightness and similar metafeatures. Thus, we would have clusters of stars that have similar apparent brightness. Then we can select from each cluster a light curve that contains a star that is known to not have any noticeable variability (exoplanet, binary system, variable star, etc). Then we can run the DTW algorithm to compare each star in that cluster to the non-variable star in order to obtain a even more ``normalized'' measure of similarity between light curves. 
 
-Another improvement we could make is to try to use a multinomial classifier or a clusterer to be specifically classify the light curve as a binary star, a variable star, a transiting planet, or something else. Instead of just classifying to be able to tell whether there is a exoplanet or not, we could expand our attribute list and collect more features to generate a classifier that can provide more detailed classification. 
+Another improvement we could make is to try to use a multinomial classifier or a clusterer to specifically classify the light curve as a binary star, a variable star, a transiting planet, or something else. Instead of just classifying to be able to tell whether there is a exoplanet or not, we could expand our attribute list and collect more features to generate a classifier that can provide more detailed classification. 
 
-We could also train and test our classifiers on larger sets of data. As the Kepler project has been discontinued, we have a very limited training set to work with. Kepler has discovered over 3000 unconfirmed planet candidates, but only a little over 100 have been confirmed, which gives us a relatively small training set. And given that greater than expected noise and failure of Kepler's instrumentation has plagued the project, the data collected in the latter half of the project is likely dubious.  In the chance of another exoplanet-discovery project in the future, we will aim to continue training and testing our classifiers. But in the meantime, there are still hundreds of thousands of Kepler target light curves to be sorted through.
+We could also train and test our classifiers on larger sets of data. As the Kepler project has been discontinued, we have a very limited training set to work with. Kepler has discovered over 3000 unconfirmed planet candidates, but only a little over 100 have been confirmed, which gives us a relatively small training set. And given that greater than expected noise and failure of Kepler's instrumentation has plagued the project, the data collected in the latter half of its mission is likely dubious.  In the chance of another exoplanet-discovery project in the future, we will aim to continue training and testing our classifiers. But in the meantime, there are still hundreds of thousands of Kepler target light curves to be sorted through.
 %As mentioned previously, we plan to look at more forms of time series analysis in order to obtain more information about our data. One thing we will consider in particular is dynamic time warping (DTW). Dynamic time warping is an algorithm for measuring the similarity between time sequences with varying time and speed. This will be helpful in confronting our problem because many exoplanets have different orbital periods or sizes, which makes comparing subtler features harder. Using DTW will allow us to compare the similarity of light curves that may have different periods, which will allow us to make a more general conclusion.
 
 % bibliography of some sort
 \begin{thebibliography}{9}
-\bibitem{AstroPy}{
-	Robiatille, Thomas P., et. al.
-	\href{http://www.aanda.org/articles/aa/pdf/2013/10/aa22068-13.pdf}{\textit{Astropy: A community Python package for astronomy}}.
-	Astronomy and Astrophysics, Volume 558, October 2013.
-}
-\bibitem{LibLinear}{
-	R.-E. Fan, K.-W. Chang, C.-J. Hsieh, X.-R. Wang, and C.-J. Lin.
-	\href{http://www.csie.ntu.edu.tw/~cjlin/papers/liblinear.pdf}{\textit{LIBLINEAR: A library for large linear classification}}.
-	\href{jmlr.org}{Journal of Machine Learning Research} 9(2008), 1871-1874.
-}
-\bibitem{Weka}{
-	Mark Hall, Eibe Frank, Geoffrey Holmes, Bernhard Pfahringer, Peter Reutemann, Ian H. Witten (2009);
-	\href{http://www.sigkdd.org/sites/default/files/issues/11-1-2009-07/p2V11n1.pdf}{\textit{The WEKA Data Mining Software: An Update}};
-	SIGKDD Explorations, Volume 11, Issue 1. 
-}
-% for the general overview, I guess?
 \bibitem{Ovr}{
 	The Extrasolar Planets Encyclopedia. \url{http://www.exoplanet.eu/} November 15, 2013.
 }
@@ -163,13 +155,39 @@ We could also train and test our classifiers on larger sets of data. As the Kepl
 	American Association of Variable Star Observers.
 	June 8, 2012.
 }
+\bibitem{Weka}{
+	Mark Hall, Eibe Frank, Geoffrey Holmes, Bernhard Pfahringer, Peter Reutemann, Ian H. Witten (2009);
+	\href{http://www.sigkdd.org/sites/default/files/issues/11-1-2009-07/p2V11n1.pdf}{\textit{The WEKA Data Mining Software: An Update}};
+	SIGKDD Explorations, Volume 11, Issue 1. 
+}
 \bibitem{mast}{
 	Mikulski Archive for Space Telescopes (MAST).
 	\url{http://archive.stsci.edu/kepler/publiclightcurves.html}
 	January 30, 2013.
 }
+\bibitem{dtw}{
+	Mitchell, Scott.
+	\href{http://www.cs.waikato.ac.nz/ml/publications/1995/Mitchell95-Time-Series.pdf}{\textit{The Application of Machine Learning Techniques to Time-Series Data}}.
+	University of Waikato. 1995.
+}
+%\bibitem{LibLinear}{
+%	R.-E. Fan, K.-W. Chang, C.-J. Hsieh, X.-R. Wang, and C.-J. Lin.
+%	\href{http://www.csie.ntu.edu.tw/~cjlin/papers/liblinear.pdf}{\textit{LIBLINEAR: A library for large linear classification}}.
+%	\href{jmlr.org}{Journal of Machine Learning Research} 9(2008), 1871-1874.
+%}
+\bibitem{AstroPy}{
+	Robiatille, Thomas P., et. al.
+	\href{http://www.aanda.org/articles/aa/pdf/2013/10/aa22068-13.pdf}{\textit{Astropy: A community Python package for astronomy}}.
+	Astronomy and Astrophysics, Volume 558, October 2013.
+}
 \bibitem{SMOreg}{
-	S.K. Shevade, S.S. Keerthi, C. Bhattacharyya, K.R.K. Murthy: Improvements to the SMO Algorithm for SVM Regression. In: IEEE Transactions on Neural Networks, 1999.
+	S.K. Shevade, S.S. Keerthi, C. Bhattacharyya, K.R.K. Murthy: \textit{Improvements to the SMO Algorithm for SVM Regression}. In: IEEE Transactions on Neural Networks, 1999.
+}
+\bibitem{NASATR}{
+	\textit{Transit Tracks}.
+	NASA.
+	\url{http://kepler.nasa.gov/education/activities/transitTracks/}.
+	June 2013.
 }
 \end{thebibliography}
 \end{document}
